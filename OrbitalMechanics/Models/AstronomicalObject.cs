@@ -1,4 +1,6 @@
-﻿namespace OrbitalMechanics.Models
+﻿using System;
+
+namespace OrbitalMechanics.Models
 {
     public class AstronomicalObject
     {
@@ -55,16 +57,34 @@
             set { this.standardGravitationalParameterField = value; }
         }
 
-        public double CalculateVelocityAtPeriapsis()
+        /// <summary>
+        /// Calculate the valocity of an object at a specific altitude inside its orbit.
+        /// </summary>
+        /// <param name="altitude">The altitude for which the velocity is desired</param>
+        /// <returns>The object's velocity in meters per second.</returns>
+        public double CalculateVelocityAtAltitude(double altitude)
         {
             if (this.Orbit == null || this.Primary == null)
             {
                 return 0.0;
             }
 
+            if (this.Orbit.SemiMajorAxis == 0.0)
+            {
+                throw new InvalidOperationException("Semi-major axis is zero; this calculation would result in dividing by zero.");
+            }
 
+            if (altitude == 0.0)
+            {
+                throw new InvalidOperationException("Altitude is zero; this calculation would result in dividing by zero.");
+            }
 
-            return 0;
+            //V^2 = GM*(2/r - 1/a)
+            // Where GM is the standard gravitational parameter,
+            // r = altitude at desired point of calculation
+            // a = semi-major axis
+
+            return Math.Sqrt(this.Primary.StandardGravitationalParameter*((2.0/altitude) - (1.0/this.Orbit.SemiMajorAxis)));
         }
     }
 }
