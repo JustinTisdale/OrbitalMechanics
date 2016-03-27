@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using OrbitalMechanics.Models;
+using OrbitalMechanics.Utility;
 
 namespace OrbitalMechanics.Tests
 {
@@ -60,8 +61,6 @@ namespace OrbitalMechanics.Tests
         {
             AstronomicalObject earth = this.GetSunEarthMoonObject();
 
-            Console.WriteLine(earth.Orbit.SemiMajorAxis);
-
             double velocityAtPeriapsis = earth.CalculateVelocityAtAltitude(earth.Orbit.Periapsis);
             Console.WriteLine(string.Format("{0:N} m/s", velocityAtPeriapsis));
 
@@ -70,6 +69,18 @@ namespace OrbitalMechanics.Tests
 
             //Should equal approximately 30,300 m/s for Earth at perihelion
             Assert.AreEqual(303, Math.Round((velocityAtPeriapsis/100)));
+        }
+
+        [Test]
+        public void CalculateEarthOrbitalPeriod()
+        {
+            AstronomicalObject earth = this.GetSunEarthMoonObject();
+
+            double orbitalPeriodEarth = earth.CalculateOrbitalPeriod();
+            Console.WriteLine(string.Format("{0:N} seconds", orbitalPeriodEarth));
+            Console.WriteLine(string.Format("{0:N} days", Conversions.SecondsToDays(orbitalPeriodEarth)));
+
+            Assert.AreEqual(365.0, Math.Round(Conversions.SecondsToDays(orbitalPeriodEarth)));
         }
     }
 }

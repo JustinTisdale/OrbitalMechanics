@@ -66,7 +66,7 @@ namespace OrbitalMechanics.Models
         {
             if (this.Orbit == null || this.Primary == null)
             {
-                return 0.0;
+                throw new InvalidOperationException("Orbital data missing.");
             }
 
             if (this.Orbit.SemiMajorAxis == 0.0)
@@ -80,11 +80,29 @@ namespace OrbitalMechanics.Models
             }
 
             //V^2 = GM*(2/r - 1/a)
-            // Where GM is the standard gravitational parameter,
+            // Where GM is the standard gravitational parameter of the primary,
             // r = altitude at desired point of calculation
             // a = semi-major axis
 
             return Math.Sqrt(this.Primary.StandardGravitationalParameter*((2.0/altitude) - (1.0/this.Orbit.SemiMajorAxis)));
+        }
+
+        /// <summary>
+        /// Calculate the orbital period for this object
+        /// </summary>
+        /// <returns></returns>
+        public double CalculateOrbitalPeriod()
+        {
+            if (this.Orbit == null || this.Primary == null)
+            {
+                throw new InvalidOperationException("Orbital data missing.");
+            }
+
+            // T = 2 * pi * sqrt(a^3 / GM }
+            // Where a = semi-major axis
+            // GM = standard gravitational parameter of the primary
+
+            return 2.0 * Math.PI * Math.Sqrt(Math.Pow(this.Orbit.SemiMajorAxis, 3.0) / this.Primary.StandardGravitationalParameter);
         }
     }
 }
