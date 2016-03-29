@@ -82,5 +82,23 @@ namespace OrbitalMechanics.Tests
 
             Assert.AreEqual(365.0, Math.Round(Conversions.SecondsToDays(orbitalPeriodEarth)));
         }
+
+        [Test]
+        public void CalculateSemiMajorAxisForDesiredOrbitalPeriod()
+        {
+            // I want to launch a geosynchronous satellite. 
+            // What semi-major axis do I need to accomplish an orbital period around Earth of exactly 24 hours?
+
+            AstronomicalObject earth = this.GetSunEarthMoonObject();
+
+            AstronomicalObject satellite = new AstronomicalObject(earth);
+            satellite.Name = "Geosync Satellite";
+            satellite.Mass = 3000.0;
+
+            double desiredSemiMajorAxis = satellite.CalculateSemiMajorAxisForDesiredOrbitalPeriod(Conversions.HoursToSeconds(24));
+
+            // Semi-major axis of a geosynchronous orbit is 42,164 km according to https://en.wikipedia.org/wiki/Geosynchronous_orbit
+            Assert.AreEqual(42164000.0, Math.Round(desiredSemiMajorAxis));
+        }
     }
 }

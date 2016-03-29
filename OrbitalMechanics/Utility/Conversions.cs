@@ -13,5 +13,11 @@ namespace OrbitalMechanics.Utility
             // Unit conversion, seconds -> minutes -> hours => days
             return secondsToConvert/60.0/60.0/24.0;
         }
+
+        public static double HoursToSeconds(double hoursToConvert)
+        {
+            // Unit conversion, hours -> minutes => seconds
+            return hoursToConvert*60.0*60.0;
+        }
     }
 }

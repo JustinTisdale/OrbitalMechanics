@@ -104,5 +104,26 @@ namespace OrbitalMechanics.Models
 
             return 2.0 * Math.PI * Math.Sqrt(Math.Pow(this.Orbit.SemiMajorAxis, 3.0) / this.Primary.StandardGravitationalParameter);
         }
+
+        /// <summary>
+        /// Calculate a semi-major axis for an orbit with the specified orbital period (in seconds)
+        /// </summary>
+        /// <param name="targetOrbitalPeriod">The desired orbital period (in seconds)</param>
+        /// <returns>The semi-major axis for the orbit needed to achieve the desired orbital period</returns>
+        public double CalculateSemiMajorAxisForDesiredOrbitalPeriod(double targetOrbitalPeriod)
+        {
+            if (this.Primary == null)
+            {
+                throw new InvalidOperationException("Primary orbital data missing.");
+            }
+
+            //a = cubed root of (GM * T^2) / (4 * pi^2)
+            // Where
+            // a = semi-major axis
+            // GM = standard gravitational parameter of the primary
+            // T = time in seconds
+
+            return Math.Pow(((this.Primary.StandardGravitationalParameter * Math.Pow(targetOrbitalPeriod, 2.0)) / (4.0 * Math.Pow(Math.PI, 2.0)) ), (1.0 / 3.0));
+        }
     }
 }
